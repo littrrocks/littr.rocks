@@ -1,0 +1,309 @@
+/* 
+    * littr.css
+    * created by Jack Bielinski
+    * [-----------------------]
+    * licensed under the Apache License 2.0
+*/
+
+:root {
+    --white: #fff;
+    --hazewhite: rgb(246, 246, 246);
+    --lightgray: rgb(207, 207, 207);
+    --gray: rgb(160, 160, 160);
+    --lightblue: rgb(228, 241, 255);
+    --lightyellow: rgb(255, 255, 228);
+    --lightgreen: rgb(228, 255, 228);
+    --lightred: rgb(255, 228, 228);
+    --darklightblue: rgb(177, 215, 255);
+    --darklightyellow: rgb(255, 255, 177);
+    --darklightgreen: rgb(177, 255, 177);
+    --darklightred: rgb(255, 177, 177);
+    
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: var(--hazewhite);
+}
+
+/* CONTAINERS */
+
+.l-MainContainer {
+    background-color: var(--white);
+    padding: 10px;
+    width: 50em;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    border: 1px solid black;
+}
+
+/* HEADERS, HEADER CONTENT */
+
+.l-MainContainer .l-Header {
+    background: #ffffff;
+    background: -moz-linear-gradient(top,  #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); 
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); 
+    background: linear-gradient(to bottom,  #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); 
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 );
+    margin-top: -10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding: 10px;
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.l-Header .l-Logo {
+    width: 85px;
+}
+
+/* MESSAGES, WARNINGS, NOTICES STYLING */
+
+.l-Msg {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.l-Msg .l-MHeader {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.01em;
+}
+
+/* STYLES FOR NOTICES, WARNINGS, MESSAGES, ETC */
+
+/* TYPE-A ALERTS */
+
+.l-Msg.t-MsgNotice {
+    background-color: var(--lightblue);
+}
+
+.l-Msg.t-MsgWarning {
+    background-color: var(--lightyellow);
+}
+
+.l-Msg.t-MsgError {
+    background-color: var(--lightred);
+}
+
+.l-Msg.t-MsgSuccess {
+    background-color: var(--lightgreen);
+}
+
+/* TYPE-B ALERTS */
+
+.l-Msg.t-MsgNotice.g {
+    background-image: linear-gradient(var(--lightblue), var(--darklightblue));
+}
+
+.l-Msg.t-MsgWarning.g {
+    background-image: linear-gradient(var(--lightyellow), var(--darklightyellow));
+}
+
+.l-Msg.t-MsgError.g {
+    background-image: linear-gradient(var(--lightred), var(--darklightred));
+}
+
+.l-Msg.t-MsgSuccess.g {
+    background-image: linear-gradient(var(--lightgreen), var(--darklightgreen));
+}
+
+/* DISPLAY CASES */
+
+.l-displayCase {
+    border-bottom: 1px solid black;
+    padding: 5px;
+    margin-bottom: 10px;
+    justify-content: center;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: -10px;
+    height: 140px;
+}
+
+.l-displayCase .l-divElement {
+    margin-left: 10px;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.l-displayCase.a {
+    background-image: url(../img/backdrops/backdrop-1.gif);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+/* BUTTONS */
+
+.l-boldAndRed {
+    background-color: red;
+    color: white;
+    font-weight: 700;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.l-boldAndRed:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* OVERRIDES */
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+/* MAPS */
+
+.b-NoBorder {
+    border: none;
+}
+
+.h-Increase {
+    height: 230px;
+}
+
+.h-Decrease {
+    height: 90px;
+}
+
+.m-DecreaseMargin {
+    margin: 0;
+}
+
+/* JQUERY */
+
+.ui-tooltip {
+	padding: 3px;
+	position: absolute;
+	z-index: 9999;
+	max-width: 300px;
+}
+
+/* TABLES */
+.demo {
+    border:1px solid #C0C0C0;
+    border-collapse:collapse;
+    padding:5px;
+}
+.demo th {
+    border:1px solid #C0C0C0;
+    padding:5px;
+    background:#F0F0F0;
+}
+.demo td {
+    border:1px solid #C0C0C0;
+    padding:5px;
+}
+
+/* IDK */
+.wrap {
+    padding: 15px;
+    background: linear-gradient(#fdfdfd, #efefef);
+    border: 1px solid black;
+}
+
+a.highlight {
+    width: 100%;
+    color:blue;
+}
+
+a.highlight:hover {
+    background-color: rgb(255, 255, 114);
+}
+
+/* POST SHIT */
+div.post {
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+div.post #handle {
+    color:rgb(163, 163, 163);
+}
+
+div.post img.pfp {
+    width: 35px;
+    height: 35px;
+    border: 1px solid black;
+    margin-right: 5px;
+}
+
+div.post div#content {
+    width: 90%;
+    vertical-align: top;
+    display: inline-block;
+}
+
+div.post span#ago {
+    color:rgb(163, 163, 163);
+    font-size: 13px;
+}
+
+/* PROFILES */
+
+.pfp {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+}
+
+#profile {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    width: 80%;
+}
+
+#name {
+    font-size: 1.5em;
+}
+
+/* MEDIA QUERY/SIZING */
+
+@media only screen and (max-width: 1000px) {
+    .l-MainContainer {
+        width: 45em;
+    }
+}
+
+@media only screen and (max-width: 780px) {
+    .l-MainContainer {
+        width: 30em;
+    }
+}
+
+@media only screen and (max-width: 541px) {
+    .l-MainContainer {
+        width: 25em;
+    }
+    div.post div#content, #profile {
+        width: 87%;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .l-MainContainer {
+        margin: -2em;
+        left: 50%;
+        margin-top: -5px;
+    }
+
+    div.post div#content, #profile {
+        width: 70%;
+    }
+}

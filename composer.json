@@ -1,0 +1,6 @@
+{
+    "require": {
+        "ext-gd": "*",
+        "gumlet/php-image-resize": "^2.0"
+    }
+}
