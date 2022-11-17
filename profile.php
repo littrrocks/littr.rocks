@@ -50,7 +50,11 @@
                 }
                 echo "<br>";
                 echo "<span style='color:gray;'>@" . htmlspecialchars($row['username']) . "</span>";
-                echo "<br>";
+                if($row['category'] != ""){
+                    echo "<span style='color:lightgray;'> | </span><span style='color:gray;'>" . htmlspecialchars($row['category']) . "</span><br>";
+                }else{
+                    echo "<br>";
+                }
                 echo "<span style='color:gray;font-size:0.8em'>Joined " . htmlspecialchars(time_elapsed_string($row['born'])) . "</span>";
                 echo "<br>";
                 echo "<br>";

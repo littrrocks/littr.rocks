@@ -96,8 +96,14 @@
                 if ($error) {
                     echo "Please fill out all fields.";
                 } else {
+                    if($_POST['category'] == "none") {
+                        $category = "";
+                    } else {
+                        $category = $_POST['category'];
+                    }
+                    
                     $stmt = $conn->prepare("UPDATE users SET name = ?, bio = ?, category = ? WHERE identifier = ?");
-                    $stmt->bind_param("ssss", $_POST['display_name'], $_POST['bio'], $_POST['category'], $_SESSION["identifier"]);
+                    $stmt->bind_param("ssss", $_POST['display_name'], $_POST['bio'], $category, $_SESSION["identifier"]);
                     $stmt->execute();
                     $littr->redir("settings");
                 }
@@ -151,6 +157,7 @@
                             <span>Display Name </span><input type='text' name='display_name' value='" . $row['name'] . "'><br>
                             <span>Category </span>
                             <select name=\"category\" id=\"category\">
+                                <option value=\"none\">None</option>
                                 <option value=\"Journalist\">Journalist</option>
                                 <option value=\"Public Figure\">Public Figure</option>
                                 <option value=\"Musician\">Musician</option>
