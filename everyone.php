@@ -48,92 +48,108 @@
             $result = $stmt->get_result();
             while ($row = $result->fetch_assoc()) {
                 if(isset($_POST['submit'])) {
-                    if ($row['verified'] == 1) {
-                        if($_FILES['file']['name'] != ''){
-                            $ID = new IdentifierGeneration();
-                            $tempID = $ID->generate_id($length = 30);
-    
-                            $target_dir = "media/";
-                            $target_file = $target_dir . time() . $tempID . basename($_FILES["file"]["name"]);
-                            $uploadOk = 1;
-                            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-                            $check = getimagesize($_FILES["file"]["tmp_name"]);
-                            if($check !== false) {
-                              echo "File is an image - " . $check["mime"] . ".";
-                              $uploadOk = 1;
-                            } else {
-                              echo "File is not an image.";
-                              $uploadOk = 0;
-                            }
-
-                            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "mp4") {
-                                $uploadOk = 0;
-                                echo "no hablo extenstion ";
-                            }
-                            
-    
-                            // Check if file already exists
-                            if (file_exists($target_file)) {
-                                $uploadOk = 0;
-                                echo "fyle exiss ";
-                            }
-    
-                            // Check file size
-                            if ($_FILES["file"]["size"] > 100000000) {
-                                $uploadOk = 0;
-                                echo "ma u file power";
-                            }
-    
-                            // Allow certain file formats
-    
-                            // Check if $uploadOk is set to 0 by an error
-                            if ($uploadOk == 0) {
-                                echo "Sorry, your file was not uploaded.";
-                            // if everything is ok, try to upload file
-                            } else {
-                                if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-                                    if($imageFileType != "mp4"){
-                                        // generate an identifier
-                                        $ID = new IdentifierGeneration();
-                                        $set = $ID->generate_id($length = 50);
-
-                                        $image = new \Gumlet\ImageResize($target_file);
-                                        $output = $target_dir . $set . "." . $imageFileType;
-                                        $image->save($output);
-
-                                        unlink($target_file);
-
-                                        $stmt = $conn->prepare("INSERT INTO posts (identifier, content, media_path) VALUES (?, ?, ?)");
-                                        $stmt->bind_param("sss", $_SESSION["identifier"], $_POST['content'], $output);
-                                        $stmt->execute();
-                                    }else{
-                                        $ID = new IdentifierGeneration();
-                                        $set = $ID->generate_id($length = 50);
-
-                                        $output = $target_dir . $set . "." . $imageFileType;
-                                        rename($target_file, $output);
-
-                                        $stmt = $conn->prepare("INSERT INTO posts (identifier, content, media_path) VALUES (?, ?, ?)");
-                                        $stmt->bind_param("sss", $_SESSION["identifier"], $_POST['content'], $output);
-                                        $stmt->execute();
-                                    }
-                                } else {
-                                    echo "Sorry, there was an error uploading your file.";
-                                }
-                            }
+                    $stmt = $conn->prepare("SELECT rate_limit FROM users WHERE username = ?");
+                    $stmt->bind_param("s", $_SESSION['username']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                        if($row['rate_limit'] > time()) {
+                            $littr->redir("everyone?error=rate_limit");
                         }else{
-                            $stmt = $conn->prepare("INSERT INTO posts (identifier, content) VALUES (?, ?)");
-                            $stmt->bind_param("ss", $_SESSION["identifier"], $_POST["content"]);
+                            $time = date("Y-m-d H:i:s", strtotime("+30 seconds"));
+                            $stmt = $conn->prepare("UPDATE users SET rate_limit = ? WHERE identifier = ?");
+                            $stmt->bind_param("ss", $time, $_SESSION["identifier"]);
                             $stmt->execute();
-                            $littr->redir("everyone");
+                            $stmt->close();
+
+                            if ($row['verified'] == 1) {
+                                if($_FILES['file']['name'] != ''){
+                                    $ID = new IdentifierGeneration();
+                                    $tempID = $ID->generate_id($length = 30);
+            
+                                    $target_dir = "media/";
+                                    $target_file = $target_dir . time() . $tempID . basename($_FILES["file"]["name"]);
+                                    $uploadOk = 1;
+                                    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        
+                                    $check = getimagesize($_FILES["file"]["tmp_name"]);
+                                    if($check !== false) {
+                                      echo "File is an image - " . $check["mime"] . ".";
+                                      $uploadOk = 1;
+                                    } else {
+                                      echo "File is not an image.";
+                                      $uploadOk = 0;
+                                    }
+        
+                                    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "mp4") {
+                                        $uploadOk = 0;
+                                        echo "no hablo extenstion ";
+                                    }
+                                    
+            
+                                    // Check if file already exists
+                                    if (file_exists($target_file)) {
+                                        $uploadOk = 0;
+                                        echo "fyle exiss ";
+                                    }
+            
+                                    // Check file size
+                                    if ($_FILES["file"]["size"] > 100000000) {
+                                        $uploadOk = 0;
+                                        echo "ma u file power";
+                                    }
+            
+                                    // Allow certain file formats
+            
+                                    // Check if $uploadOk is set to 0 by an error
+                                    if ($uploadOk == 0) {
+                                        echo "Sorry, your file was not uploaded.";
+                                    // if everything is ok, try to upload file
+                                    } else {
+                                        if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+                                            if($imageFileType != "mp4"){
+                                                // generate an identifier
+                                                $ID = new IdentifierGeneration();
+                                                $set = $ID->generate_id($length = 50);
+        
+                                                $image = new \Gumlet\ImageResize($target_file);
+                                                $output = $target_dir . $set . "." . $imageFileType;
+                                                $image->save($output);
+        
+                                                unlink($target_file);
+        
+                                                $stmt = $conn->prepare("INSERT INTO posts (identifier, content, media_path) VALUES (?, ?, ?)");
+                                                $stmt->bind_param("sss", $_SESSION["identifier"], $_POST['content'], $output);
+                                                $stmt->execute();
+                                            }else{
+                                                $ID = new IdentifierGeneration();
+                                                $set = $ID->generate_id($length = 50);
+        
+                                                $output = $target_dir . $set . "." . $imageFileType;
+                                                rename($target_file, $output);
+        
+                                                $stmt = $conn->prepare("INSERT INTO posts (identifier, content, media_path) VALUES (?, ?, ?)");
+                                                $stmt->bind_param("sss", $_SESSION["identifier"], $_POST['content'], $output);
+                                                $stmt->execute();
+                                            }
+                                        } else {
+                                            echo "Sorry, there was an error uploading your file.";
+                                        }
+                                    }
+                                }else{
+                                    $stmt = $conn->prepare("INSERT INTO posts (identifier, content) VALUES (?, ?)");
+                                    $stmt->bind_param("ss", $_SESSION["identifier"], $_POST["content"]);
+                                    $stmt->execute();
+                                    $littr->redir("everyone");
+                                }
+                        
+                            }else{
+                                $stmt3 = $conn->prepare("INSERT INTO posts (identifier, content) VALUES (?, ?)");
+                                $stmt3->bind_param("ss", $_SESSION["identifier"], $_POST["content"]);
+                                $stmt3->execute();
+                                $littr->redir("everyone");
+                            }
                         }
-                
-                    }else{
-                        $stmt3 = $conn->prepare("INSERT INTO posts (identifier, content) VALUES (?, ?)");
-                        $stmt3->bind_param("ss", $_SESSION["identifier"], $_POST["content"]);
-                        $stmt3->execute();
-                        $littr->redir("everyone");
                     }
                 }
             }
