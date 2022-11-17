@@ -39,6 +39,10 @@
 
                     $littr->redir("lookup?table=" . $table);
                 }
+
+                if(isset($_POST['generate'])){
+                    $ID = 
+                }
             ?>
             <form method="post">
                 <span>Search in </span>
@@ -52,8 +56,14 @@
                         }
                     ?>&nbsp;&nbsp;
                  <input type="submit" value="Go" name="dblookup">
-            </form>
+            </form><br>
         </fieldset><br>
+        <form method="post">
+                <fieldset>
+                    <legend><strong>Invite Key Generator</strong></legend>
+                    <input type="submit" value="Generate" name="generate">
+                </fieldset>
+        </form><br>
         <fieldset>
             <legend><strong>Messenger</strong></legend>
             <span>The Messenger can be used to inform members through their <strong>Direct Messages</strong>.</span><br>

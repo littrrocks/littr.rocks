@@ -47,6 +47,8 @@
                             $pfp = $row['pfp'];
                             if ($row['verified'] == 1) {
                                 $verified = " <img src='img/verified.png' width=13>";
+                            }else{
+                                $verified = "";
                             }
                         }
 

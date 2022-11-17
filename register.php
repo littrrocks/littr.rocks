@@ -16,25 +16,45 @@
             $username = $_POST["username"];
             $password = $_POST["password"];
             $confirmPassword = $_POST["password2"];
+            $key = $_POST["invitekey"];
 
-            if (ctype_alnum($username)) {
-                if ($password == $confirmPassword) {
-                    $password = password_hash($password, PASSWORD_DEFAULT);
-
-                    $idgeneration = new IdentifierGeneration();
-                    $id = $idgeneration->generate_id();
-
-                    $stmt = $conn->prepare("INSERT INTO users (`username`, `password`, `identifier`) VALUES (?, ?, ?)");
-                    $stmt->bind_param("sss", $username, $password, $id);
-                    $stmt->execute();
-                    $stmt->close();
-
-                    $littr->redir("login");
-                } else {
-                    $statusText = "1";
+            $required = array('username', 'password', 'password2');
+            $error = false;
+            foreach($required as $field) {
+                if (empty($_POST[$field])) {
+                    $error = true;
+                    $statusText = 4;
+                }else{
+                    if (ctype_alnum($username)) {
+                        $stmt = $conn->prepare("SELECT * FROM inv WHERE key_encrypt = ?");
+                        $stmt->bind_param("s", $key);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while ($row = $result->fetch_assoc()) {
+                            $db_key = $row["key_encrypt"];
+                            
+                            if ($key == $db_key) {
+                                if ($password == $confirmPassword) {
+                                    $password = password_hash($password, PASSWORD_DEFAULT);
+                
+                                    $idgeneration = new IdentifierGeneration();
+                                    $id = $idgeneration->generate_id();
+                
+                                    $stmt = $conn->prepare("INSERT INTO users (`username`, `password`, `identifier`) VALUES (?, ?, ?)");
+                                    $stmt->bind_param("sss", $username, $password, $id);
+                                    $stmt->execute();
+                                    $stmt->close();
+                
+                                    $littr->redir("login");
+                                } else {
+                                    $statusText = "1";
+                                }
+                            }else{
+                                $statusText = "3";
+                            }
+                        }
+                    }
                 }
-            }else{
-                $statusText = "3";
             }
         }
     ?>
@@ -49,7 +69,8 @@
                 <form method="post">
                     <input type="text" name="username" placeholder="Username" required><br>
                     <input type="password" name="password" placeholder="Password" required><br>
-                    <input type="password" name="password2" placeholder="Confirm Password" required><br><br>
+                    <input type="password" name="password2" placeholder="Confirm Password" required><br>
+                    <input type="text" name="invitekey" id="invitekey" placeholder="Invite Key" required><br><br>
                     <input type="submit" name="submit" value="Register"><br><br>
                     <?php
                         if (isset($statusText)) {
@@ -57,10 +78,12 @@
                                 echo "<span style='color:red'>Passwords do not match!</span>";
                             }else if ($statusText == "3") {
                                 echo "<span style='color:red'>Username is not alphanumeric!</span>";
+                            }else if ($statusText == "4") {
+                                echo "<span style='color:red'>Please fill out all fields!</span>";
                             }
                         }
                     ?>
-                </form><br>
+                </form>
                 <sub>By clicking 'Register', you agree to our <a href="#">Community Guidelines</a> and <a href="#">Privacy Policy</a>.</sub>
             </div>
         </div>
