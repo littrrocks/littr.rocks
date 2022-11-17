@@ -26,8 +26,21 @@
                 <br><a class="l-boldAndRed" href="register">Register</a> or <a href="login">Log In</a>
             </div>
         </div>
-        <div style='text-align:center;'>
-            <img src="img/testimonials.png" alt="Testimonials" width=300 style='margin:10px;'>
+        <?php
+            $stmt = $conn->prepare("SELECT COUNT(id) FROM users");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                $count = mysqli_num_rows($result);
+            }
+        ?>
+        <div class="l-displayCase" style='text-align:center;height:auto;'>
+            <strong>Join the <?php echo $count; ?> people discussing on littr.</strong><br><br>
+            <span class='circle-num'>1</span>
+            <div style='display:inline-block;width:50%;vertical-align:top;text-align:left;'>
+                <strong>Get a key</strong><br>
+                <span><a href="https://discord.gg/littr">Join our Discord server</a> for key giveaways everyday!</span>
+            </div>
         </div>
     </div>
 </body>

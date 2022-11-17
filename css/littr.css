@@ -59,6 +59,23 @@ body {
     width: 85px;
 }
 
+/* CUSTOM SHIT */
+ul list-style-type: stylea;
+
+@counter-style stylea {
+    background: #cccccc;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #fff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 15px;
+    text-align: center;
+    width: 1.6em; 
+}
+
 /* MESSAGES, WARNINGS, NOTICES STYLING */
 
 .l-Msg {
@@ -70,6 +87,21 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     font-size: 1.01em;
+}
+
+/* NUMBERED BULLETS THINGIES */
+span.circle-num {
+    background: #cccccc;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #fff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 15px;
+    text-align: center;
+    width: 1.6em; 
 }
 
 /* STYLES FOR NOTICES, WARNINGS, MESSAGES, ETC */

@@ -32,16 +32,22 @@
                         $result = $stmt->get_result();
                         while ($row = $result->fetch_assoc()) {
                             $db_key = $row["key_encrypt"];
+                            $db_key_uses = $row["used"];
                             
-                            if ($key == $db_key) {
+                            if ($key == $db_key && $db_key_uses != 1) {
                                 if ($password == $confirmPassword) {
                                     $password = password_hash($password, PASSWORD_DEFAULT);
                 
                                     $idgeneration = new IdentifierGeneration();
                                     $id = $idgeneration->generate_id();
                 
-                                    $stmt = $conn->prepare("INSERT INTO users (`username`, `password`, `identifier`) VALUES (?, ?, ?)");
-                                    $stmt->bind_param("sss", $username, $password, $id);
+                                    $stmt = $conn->prepare("INSERT INTO users (`name`, `username`, `password`, `identifier`) VALUES (?, ?, ?, ?)");
+                                    $stmt->bind_param("ssss", $username, $username, $password, $id);
+                                    $stmt->execute();
+                                    $stmt->close();
+
+                                    $stmt = $conn->prepare("UPDATE inv SET used = 1 WHERE key_encrypt = ?");
+                                    $stmt->bind_param("s", $key);
                                     $stmt->execute();
                                     $stmt->close();
                 
@@ -50,9 +56,11 @@
                                     $statusText = "1";
                                 }
                             }else{
-                                $statusText = "3";
+                                $statusText = "2";
                             }
                         }
+                    }else{
+                        $statusText = "3";
                     }
                 }
             }
@@ -76,6 +84,8 @@
                         if (isset($statusText)) {
                             if ($statusText == "1") {
                                 echo "<span style='color:red'>Passwords do not match!</span>";
+                            }elseif ($statusText == "2") {
+                                echo "<span style='color:red'>Invite key is either invalid or already used.</span>";
                             }else if ($statusText == "3") {
                                 echo "<span style='color:red'>Username is not alphanumeric!</span>";
                             }else if ($statusText == "4") {
