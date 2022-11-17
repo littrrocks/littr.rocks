@@ -26,10 +26,8 @@
                 <br><a class="l-boldAndRed" href="register">Register</a> or <a href="login">Log In</a>
             </div>
         </div>
-        <img src="img/testomonials.png" alt="Testomonials" width=200>
-        <div style="justify-content:center;margin-left:10px;vertical-align:top;display:inline-block;width:50%">
-            <div><strong>A place for communication.</strong><br>
-            <span>Explore groups, posts, and profiles. It's all happening on littr. It's easy and free to sign up for an account.</span></div>
+        <div style='text-align:center;'>
+            <img src="img/testimonials.png" alt="Testimonials" width=300 style='margin:10px;'>
         </div>
     </div>
 </body>
