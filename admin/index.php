@@ -41,7 +41,19 @@
                 }
 
                 if(isset($_POST['generate'])){
-                    $ID = 
+                    mysqli_report(MYSQLI_REPORT_STRICT);
+
+                    $genRand = random_int(5,50);
+
+                    $ID = new IdentifierGeneration($length = $genRand);
+                    $ide = $ID->generate_id();
+
+                    $stmt = $conn->prepare("INSERT INTO inv (`key_encrypt`) VALUES (?)");
+                    $stmt->bind_param("s", $ide);
+                    $stmt->execute();
+
+                    $generatedText = "<strong>Generated Key:</strong> " . $ide;
+
                 }
             ?>
             <form method="post">
@@ -62,6 +74,12 @@
                 <fieldset>
                     <legend><strong>Invite Key Generator</strong></legend>
                     <input type="submit" value="Generate" name="generate">
+                    <?php
+                        if(isset($generatedText)){
+                            echo "<br><br>";
+                            echo $generatedText;
+                        }
+                    ?>
                 </fieldset>
         </form><br>
         <fieldset>
