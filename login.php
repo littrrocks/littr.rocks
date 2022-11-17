@@ -27,6 +27,7 @@
                 if (password_verify($password, $db_password)) {
                     $_SESSION["identifier"] = $row["identifier"];
                     $_SESSION['id'] = $row['id'];
+                    $_SESSION['username'] = $row['username'];
                     $littr->redir("home");
                 }else{
                     $statusText = "1";

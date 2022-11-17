@@ -146,7 +146,8 @@
                     $stmt->execute();
                     $result = $stmt->get_result();
                     while ($row = $result->fetch_assoc()) {
-                        echo "
+                        if ($row['verified'] == 1){
+                            echo "
                             <span>Display Name </span><input type='text' name='display_name' value='" . $row['name'] . "'><br>
                             <span>Category </span>
                             <select name=\"category\" id=\"category\">
@@ -176,6 +177,13 @@
                             <span style='vertical-align:top'>Biography </span><textarea style='resize:none;' name='bio' rows='4' cols='50'>" . $row['bio'] . "</textarea><br>
                             <input type='submit' name='publicinfosubmit' value='Save'>
                         ";
+                        }else{
+                            echo "
+                            <span>Display Name </span><input type='text' name='display_name' value='" . $row['name'] . "'><br>
+                            <span style='vertical-align:top'>Biography </span><textarea style='resize:none;' name='bio' rows='4' cols='50'>" . $row['bio'] . "</textarea><br>
+                            <input type='submit' name='publicinfosubmit' value='Save'>
+                        ";
+                        }
                     }
                 ?>
             </fieldset>
