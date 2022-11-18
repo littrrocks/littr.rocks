@@ -155,10 +155,10 @@
                     }
                 }
             }
+            
+            if(isset($_GET['error'])) {
+                $error = $_GET['error'];
 
-            $error = $_GET['error'];
-
-            if(isset($error)){
                 if($error == "rate_limit"){
                     echo "<div class='l-Msg t-MsgError'>
                             <div class='l-divElement'>
@@ -203,10 +203,24 @@
             </script>
         </form><br>
         <?php
-            $stmt = $conn->prepare("SELECT * FROM posts ORDER BY statusid DESC");
+            if (!isset ($_GET['page']) ) {  
+                $page = 1;  
+            } else {  
+                $page = $_GET['page'];  
+            }  
+
+            $results_per_page = 10;  
+            $page_first_result = ($page-1) * $results_per_page;  
+
+            $stmt = $conn->prepare("SELECT * FROM posts");
             $stmt->execute();
             $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
+            $number_of_result = mysqli_num_rows($result);  
+            $number_of_page = ceil ($number_of_result / $results_per_page);  
+            $stmt3 = $conn->prepare("SELECT * FROM posts ORDER BY statusid DESC LIMIT " . $page_first_result . ',' . $results_per_page);
+            $stmt3->execute();
+            $result3 = $stmt3->get_result();
+            while ($row = $result3->fetch_assoc()) {
                 $stmt2 = $conn->prepare("SELECT * FROM users WHERE identifier = ?");
                 $stmt2->bind_param("s", $row['identifier']);
                 $stmt2->execute();
@@ -241,6 +255,10 @@
                     echo "</div>";
                 }
             }
+
+            for($page = 1; $page<= $number_of_page; $page++) {  
+                echo '<a href = "everyone?page=' . $page . '">' . $page . ' </a>';  
+            }  
         ?>
     </div>
 </body>
