@@ -155,6 +155,18 @@
                     }
                 }
             }
+
+            $error = $_GET['error'];
+
+            if(isset($error)){
+                if($error == "rate_limit"){
+                    echo "<div class='l-Msg t-MsgError'>
+                            <div class='l-divElement'>
+                                <strong class='l-MHeader'>You are posting too fast!</strong>
+                            </div>
+                        </div><br>";
+                }
+            }
         ?>
         <form method="post" enctype="multipart/form-data">
             <textarea maxlength="300" name="content" onkeyup="textCounter(this,'counter',300);" id="content" style="resize:none;width:99%;font-family:Arial;height:54px"></textarea>
