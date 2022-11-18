@@ -53,10 +53,12 @@
                     $stmt->execute();
                     $result = $stmt->get_result();
                     while ($row = $result->fetch_assoc()) {
-                        if($row['rate_limit'] > time()) {
+                        $rltime = strtotime($row['rate_limit']);
+
+                        if($rltime > time()) {
                             $littr->redir("everyone?error=rate_limit");
                         }else{
-                            $time = date("Y-m-d H:i:s", strtotime("+30 seconds"));
+                            $time = date("Y-m-d H:i:s", strtotime("+1 minute"));
                             $stmt = $conn->prepare("UPDATE users SET rate_limit = ? WHERE identifier = ?");
                             $stmt->bind_param("ss", $time, $_SESSION["identifier"]);
                             $stmt->execute();
