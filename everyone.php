@@ -202,25 +202,23 @@
                 el.addEventListener('keyup', countCharacters, false);
             </script>
         </form><br>
-        <?php
-            if (!isset ($_GET['page']) ) {  
-                $page = 1;  
-            } else {  
-                $page = $_GET['page'];  
-            }  
+        <?php 
+            $per_page_record = 4;  // Number of entries to show in a page.   
+            // Look for a GET variable page if not found default is 1.        
+            if (isset($_GET["page"])) {    
+                $page  = $_GET["page"];    
+            }    
+            else {    
+            $page=1;    
+            }    
 
-            $results_per_page = 10;  
-            $page_first_result = ($page-1) * $results_per_page;  
+            $start_from = ($page-1) * $per_page_record;     
 
-            $stmt = $conn->prepare("SELECT * FROM posts");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $number_of_result = mysqli_num_rows($result);  
-            $number_of_page = ceil ($number_of_result / $results_per_page);  
-            $stmt3 = $conn->prepare("SELECT * FROM posts ORDER BY statusid DESC LIMIT " . $page_first_result . ',' . $results_per_page);
-            $stmt3->execute();
-            $result3 = $stmt3->get_result();
-            while ($row = $result3->fetch_assoc()) {
+            $query = "SELECT * FROM posts ORDER BY statusid DESC LIMIT $start_from, $per_page_record";     
+            $stmt1 = $conn->prepare($query);
+            $stmt1->execute();
+            $rs_result = $stmt1->get_result();
+            while ($row = $rs_result->fetch_assoc()) {
                 $stmt2 = $conn->prepare("SELECT * FROM users WHERE identifier = ?");
                 $stmt2->bind_param("s", $row['identifier']);
                 $stmt2->execute();
@@ -256,9 +254,33 @@
                 }
             }
 
-            for($page = 1; $page<= $number_of_page; $page++) {  
-                echo '<a href = "everyone?page=' . $page . '">' . $page . ' </a>';  
-            }  
+            $query = "SELECT COUNT(*) FROM posts";     
+            $rs_result = mysqli_query($conn, $query);  
+            $row = mysqli_fetch_row($rs_result);     
+            $total_records = $row[0];     
+
+            $total_pages = ceil($total_records / $per_page_record);     
+            $pagLink = "";       
+          
+            if($page>=2){   
+                echo "<a href='everyone?page=".($page-1)."'>  Prev </a>";   
+            }       
+                       
+            for ($i=1; $i<=$total_pages; $i++) {   
+              if ($i == $page) {   
+                  $pagLink .= "<a class = 'active' href='everyone?page="  
+                                                    .$i."'>".$i." </a>";   
+              }               
+              else  {   
+                  $pagLink .= "<a href='everyone?page=".$i."'>   
+                                                    ".$i." </a>";     
+              }   
+            };     
+            echo $pagLink;   
+      
+            if($page<$total_pages){   
+                echo "<a href='everyone?page=".($page+1)."'>  Next </a>";   
+            }   
         ?>
     </div>
 </body>

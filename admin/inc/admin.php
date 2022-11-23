@@ -1,7 +1,6 @@
 <?php
     session_start();
-    include "../vendor/autoload.php";
-    include '../inc/littr-functions.php';
+    include 'littr-functions.php';
 
     $conn = new mysqli("localhost", "root", "root", "littr");
     
