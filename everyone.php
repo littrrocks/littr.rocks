@@ -1,4 +1,4 @@
-<?php include "inc/main.php" ?>
+<?php include "inc/main.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +48,7 @@
             $result = $stmt->get_result();
             while ($row = $result->fetch_assoc()) {
                 if(isset($_POST['submit'])) {
-                    $stmt = $conn->prepare("SELECT rate_limit FROM users WHERE username = ?");
+                    $stmt = $conn->prepare("SELECT rate_limit, verified FROM users WHERE username = ?");
                     $stmt->bind_param("s", $_SESSION['username']);
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -65,6 +65,10 @@
                             $stmt->close();
 
                             if ($row['verified'] == 1) {
+                                mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+                                ini_set('display_errors',1);
+                                error_reporting(E_ALL);
+
                                 if($_FILES['file']['name'] != ''){
                                     $ID = new IdentifierGeneration();
                                     $tempID = $ID->generate_id($length = 30);

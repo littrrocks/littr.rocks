@@ -72,6 +72,20 @@
                     }
                     echo "<span id='handle'>@" . htmlspecialchars($row['username']) . "</span><br>";
                     echo "<span id='content'>" . htmlspecialchars($row2['content']) . "</span><br>";
+                    if($row2['media_path'] != ""){
+                        $fileExt = explode(".", $row2['media_path']);
+
+                        if($fileExt[1] == "mp4"){
+                            echo "
+                            <video width=\"320\" controls style='border:1px solid black;margin:10px;'>
+                                <source src=\"" . $row2['media_path'] . "\" type=\"video/mp4\">
+                                Your browser does not support the video tag.
+                            </video><br>
+                            ";
+                        }else{
+                            echo "<img width=\"320\" style='border:1px solid black;margin:10px;' src='" . $row2['media_path'] . "'><br>";
+                        }
+                    }
                     echo "<span id='ago'>" . time_elapsed_string($row2['born']) . "</span>";
                     echo "</div>";
                     echo "</div>";

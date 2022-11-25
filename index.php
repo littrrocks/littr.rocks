@@ -26,20 +26,17 @@
                 <br><a class="l-boldAndRed" href="register">Register</a> or <a href="login">Log In</a>
             </div>
         </div>
-        <?php
-            $stmt = $conn->prepare("SELECT COUNT(id) FROM users");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                $count = mysqli_num_rows($result);
-            }
-        ?>
-        <div class="l-displayCase" style='text-align:center;height:auto;'>
-            <strong>Join the <?php echo $count; ?> people discussing on littr.</strong><br><br>
-            <span class='circle-num'>1</span>
-            <div style='display:inline-block;width:50%;vertical-align:top;text-align:left;'>
-                <strong>Get a key</strong><br>
-                <span><a href="https://discord.gg/littr">Join our Discord server</a> for key giveaways everyday!</span>
+            <div style='margin:auto;'>
+                <img src="img/twitter-dead.jpg" alt="Dead Twitter Bird" width=200>
+                <div style='display:inline-block;vertical-align:top;width:50%'>
+                    <strong style='font-size:20px;'>The blue bird killer.</strong><br>
+                    <span>We take our Community Guidelines very seriously - we have a zero-tolerance policy for any account that breaks our rules, and will make sure that bans are issued when needed.</span><br>
+                    <ul>
+                        <li>littr does not sell verification or any special priviledges that create a disadvantage to any user</li>
+                        <li>littr enforces a zero-tolerance policy if a user or group violates the Community Guidelines</li>
+                        <li>...and littr does not allow any pornographic content on the platform, unlike the blue bird app</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

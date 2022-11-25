@@ -31,52 +31,6 @@
                 }
             ?>
         </fieldset><br>
-        <fieldset>
-            <legend><strong>Database Lookup</strong></legend>
-            <?php
-                if(isset($_POST['dblookup'])){
-                    $table = $_POST['tablename'];
-
-                    $littr->redir("lookup?table=" . $table);
-                }
-
-                if(isset($_POST['generate'])){
-                    $random = array();
-                    for ($i = 0; $i < 7; $i++) {
-                        $random[$i] = rand(1000,9999);
-                    }
-                }
-            ?>
-            <form method="post">
-                <span>Search in </span>
-                <select name="tablename" id="tablename">
-                    <?php
-                        $stmt = $conn->prepare("SHOW TABLES");
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<option value='" . $row['Tables_in_littr'] . "'>" . $row['Tables_in_littr'] . "</option>";
-                        }
-                    ?>&nbsp;&nbsp;
-                 <input type="submit" value="Go" name="dblookup">
-            </form><br>
-        </fieldset><br>
-        <form method="post">
-                <fieldset>
-                    <legend><strong>Invite Key Generator</strong></legend>
-                    <input type="submit" value="Generate 10 keys" name="generate">
-                    <?php
-                        if(isset($keys)){
-                            echo $keyURL;
-                        }
-                    ?>
-                </fieldset>
-        </form><br>
-        <fieldset>
-            <legend><strong>Messenger</strong></legend>
-            <span>The Messenger can be used to inform members through their <strong>Direct Messages</strong>.</span><br>
-            <a href="#">Create message</a>
-        </fieldset>
     </div>
 </body>
 </html>
